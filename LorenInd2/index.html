@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loren_Ind</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Estilos del encabezado */
+        header {
+            background-color: #2c8c3c;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 12000px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+        
+        /* Estilos del botón del carrito */
+        .cart-button {
+            background-color: white;
+            color: #2c8c3c;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .cart-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff5252;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Estilos del banner principal */
+        .banner {
+            background-color: #4caf50;
+            color: white;
+            text-align: center;
+            padding: 25px 50px;
+            margin-bottom: 10px;
+        }
+        
+        .banner h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .banner p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Estilos de la sección de productos */
+        .products-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c8c3c;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            background-color: #f0f0f0; /* Color de fondo mientras carga la imagen */           
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            color: #2c8c3c;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart {
+            background-color: #2c8c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #1e6b2a;
+        }
+        
+        /* Estilos del botón de WhatsApp */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Estilos del modal del carrito */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .cart-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .cart-items {
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-details {
+            flex-grow: 1;
+        }
+        
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+        
+        .quantity-btn {
+            background-color: #f0f0f0;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity {
+            margin: 0 10px;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: #2c8c3c;
+        }
+        
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        
+        .send-order {
+            background-color: #2c8c3c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .send-order:hover {
+            background-color: #1e6b2a;
+        }
+        
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 146px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado con logo y botón del carrito -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Loren_Ind</div>
+            <button class="cart-button" id="cartButton">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Banner principal -->
+    <section class="banner">
+        <h1>Productos de Limpieza para un Hogar Brillante</h1>
+        <p>Encuentra todo lo que necesitas para mantener tu hogar impecable</p>
+    </section>
+
+    <!-- Sección de productos -->
+    <section class="products-section">
+        <h2 class="section-title">Calidad, Eficiencia en cada Productos de Limpieza</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- Los productos se cargarán aquí con JavaScript -->
+        </div>
+    </section>
+
+    <!-- Botón flotante de WhatsApp -->
+    <div class="whatsapp-button" id="whatsappButton">
+        <span>💬</span>
+    </div>
+
+    <!-- Modal del carrito de compras -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <span class="close-button" id="closeCart">&times;</span>
+            <h2>Tu Carrito de Compras</h2>
+            <div class="cart-items" id="cartItems">
+                <!-- Los productos del carrito se mostrarán aquí -->
+            </div>
+            <div class="cart-total">
+                Total: $<span id="cartTotal">0</span>
+            </div>
+            <button class="send-order" id="sendOrder">Enviar Pedido por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>LorenInd &copy; 2025 - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        // Número de WhatsApp para enviar los pedidos
+        const whatsappNumber = "593991596527"; // Reemplaza con tu número de WhatsApp
+        
+        // Array con información de los productos
+        const products = [
+            // Aquí deberás agregar información de tus 75 productos
+            // Este es un ejemplo con 3 productos, debes completar con los 75
+            {
+                id: 1,
+                name: "Arranca Grasa Limon Galón",
+                price: 15.40,
+                image: "imagenes/arranca-grasa-galon.jpg" // Ruta a tu imagen
+            },
+            {
+                id: 2,
+                name: "Arranca Grasa Limon 600ml",
+                price: 4.60,
+                image: "imagenes/arranca-grasa-limon-600ml.png"
+            },
+            {
+                id: 3,
+                name: "Lavavajillas Maracuyá Galón",
+                price: 15.15,
+                image: "imagenes/lavavajillas-galon-maracuya.jpg"
+            },
+            {
+                id: 4,
+                name: "Lavavajillas Maracuyá Litro",
+                price: 5.00,
+                image: "imagenes/lavavajilla-maracuya-litro.jpg"
+            },
+            {
+                id: 5,
+                name: "Lavavajillas Limon Galón",
+                price: 14.35,
+                image: "imagenes/lavavajillas-galon-limon.jpg"
+            },
+            {
+                id: 6,
+                name: "Lavavajillas Limon Litro",
+                price: 5.00,
+                image: "imagenes/lavavajilla-limon-litro.jpg"
+            },
+            {
+                id: 7,
+                name: "Limpiador Antibacterial para Neveras y Refrigeradoras 600ml",
+                price:  3.40,
+                image: "imagenes/limpiador-neveras.jpg"
+            },
+            {
+                id: 8,
+                name: "Multiusos Sin Aroma Galón",
+                price: 16.40,
+                image: "imagenes/multiusos-galon.jpg"
+            },
+            {
+                id: 9,
+                name: "Multiusos Sin Aroma Litro",
+                price: 4.25,
+                image: "imagenes/multiusos-litro.jpg"
+            },
+            {
+                id: 10,
+                name: "Destapador de Cañerías Litro",
+                price: 5.00,
+                image: "imagenes/destapador-canerias.jpg"
+            },
+            {
+                id: 11,
+                name: "Detergente para ropa de Bebé Floral Galón",
+                price: 16.40,
+                image: "imagenes/detergente-liquido-ropa-de-bebe-galon.jpg"
+            },
+            {
+                id: 12,
+                name: "Detergente para ropa de Bebé Floral Litro",
+                price: 5.00,
+                image: "imagenes/detergente-liquido-bebe-litro.jpg"
+            },
+            {
+                id: 13,
+                name: "Detergente Ropa Oscura Manzana Verde Galón",
+                price: 17.70,
+                image: "imagenes/detergente-liquido-ropa-oscura-galon.jpg"
+            },
+            {
+                id: 14,
+                name: "Detergente Ropa Oscura Manzana Verde Litro",
+                price: 5.00,
+                image: "imagenes/detergente-liquido-ropa-oscura-litro.jpg"
+            },
+            {
+                id: 15,
+                name: "Detergente Restaurador de Ropa Vainilla Litro",
+                price: 5.35,
+                image: "imagenes/detergente-restaurador-de-ropa.jpg"
+            },
+            {
+                id: 16,
+                name: "Detergente Liquido Floral Galón",
+                price: 15.15,
+                image: "imagenes/detergente-liquido-floral-galon.jpg"
+            },
+            {
+                id: 17,
+                name: "Detergente Liquido Floral Litro",
+                price: 4.35,
+                image: "imagenes/detergente-liquido-floral-litro.jpg"
+            },
+            {
+                id: 18,
+                name: "Detergente con Suavisante Frutos Rojos 2000ml",
+                price: 13.10,
+                image: "imagenes/detergente-con-suavizante-frutos-rojos-2000-ml.jpg"
+            },
+            {
+                id: 19,
+                name: "Detergente para ropa Intima 2000ml",
+                price: 10.15,
+                image: "imagenes/detergente-ropa-intima.jpeg"
+            },
+            {
+                id: 20,
+                name: "Quita Manchas Litro",
+                price: 4.60,
+                image: "imagenes/quita-manchas-litro.jpg"
+            },
+            {
+                id: 21,
+                name: "Cloro sin Aroma Galón",
+                price: 6.15,
+                image: "imagenes/cloro-sin-aroma-galon.jpg"
+            },
+            {
+                id: 22,
+                name: "Cloro sin Aroma Litro",
+                price: 2.15,
+                image: "imagenes/cloro-sin-aroma-litro.jpg"
+            },
+            {
+                id: 23,
+                name: "Cloro Gel Pino Galón",
+                price: 12.30,
+                image: "imagenes/cloro-gel-galon.png"
+            },
+            {
+                id: 24,
+                name: "Cloro Gel Pino Litro",
+                price: 3.70,
+                image: "imagenes/cloro-gel-litro.jpg"
+            },
+            {
+                id: 25,
+                name: "Desinfectante de Frutas y Verduras Sin Amora 500ml",
+                price: 3.55,
+                image: "imagenes/desinfectante-defrutas.jpg"
+            },
+            {
+                id: 26,
+                name: "Desinfectante Formula Mejorada Maracuyá Galón",
+                price: 13.10,
+                image: "imagenes/desinfectante-maracuya-galon.jpeg"
+            },
+            {
+                id: 27,
+                name: "Desinfectante Formula Mejorada Maracuyá Litro",
+                price: 4.60,
+                image: "imagenes/desinfectantemaracuya-litro.jpg"
+            },
+            {
+                id: 28,
+                name: "Desinfectante Formula Mejorada Manzana Canela Litro",
+                price: 4.60,
+                image: "imagenes/desinfectante-manzana-canela-litro.jpg"
+            },
+            {
+                id: 29,
+                name: "Desinfectante Formula Mejorada Pino Litro",
+                price: 4.60,
+                image: "imagenes/desinfectantepino_litro.jpg"
+            },
+            {
+                id: 30,
+                name: "Desinfectante Formula Mejorada Brisa Galon",
+                price: 17.45,
+                image: "imagenes/DESINFECTANTE-BRISA-galon.jpeg"
+            },
+            {
+                id: 31,
+                name: "Desinfectante Formula Mejorada Brisa Litro",
+                price: 4.60,
+                image: "imagenes/desinfectante-brisa-litro.jpeg"
+            },
+            {
+                id: 32,
+                name: "Desinfectante de Colchones 600ml",
+                price: 8.20,
+                image: "imagenes/desinfectante-decolchones.jpg"
+            },
+            {
+                id: 33,
+                name: "Detergente en Polvo Floral 1KG",
+                price: 6.20,
+                image: "imagenes/detergente-en-polvo.jpg"
+            },
+            {
+                id: 34,
+                name: "Plancha Fácil Floral 600ml",
+                price: 3.30,
+                image: "imagenes/plancha-facil.png"
+            },
+            {
+                id: 35,
+                name: "Limpiador para Biberones Litro",
+                price: 4.85,
+                image: "imagenes/limpiador-de-biberones.jpg"
+            },
+            {
+                id: 36,
+                name: "Suavizante Vainilla Galón",
+                price: 13.35,
+                image: "imagenes/suavizante-vainilla-galon.jpg"
+            },
+            {
+                id: 37,
+                name: "Suavizante Vainilla Litro",
+                price: 3.85,
+                image: "imagenes/suavizante-vainilla-litro.jpg"
+            },
+            {
+                id: 38,
+                name: "Suavizante Flores del Campo Galón",
+                price: 13.35,
+                image: "imagenes/suavizante-flores-del-campo-galon.jpg"
+            },
+            {
+                id: 39,
+                name: "Suavizante Flores del Campo Litro",
+                price: 3.85,
+                image: "imagenes/suavizante-liquido-floral-litro.jpg"
+            },
+            {
+                id: 40,
+                name: "Virusbacter Sin Aroma 600ml",
+                price: 5.65,
+                image: "imagenes/virusbacte.png"
+            },
+            {
+                id: 41,
+                name: "Limpia Vidrio Sin Aroma 600ml",
+                price: 4.00,
+                image: "imagenes/limpiavidrios.png"
+            },
+            {
+                id: 42,
+                name: "Limpia Muebles Vainilla 500ml",
+                price: 4.60,
+                image: "imagenes/limpiamuebles.jpg"
+            },
+            {
+                id: 43,
+                name: "Shampoo para Alfombras y Tapices Fresa 2000ml",
+                price: 8.00,
+                image: "imagenes/shampoo-para-alfombras.jpg"
+            },
+            {
+                id: 44,
+                name: "Desoxidante de superficies 600ml",
+                price: 5.10,
+                image: "imagenes/desoxidante-de-superficies.jpg"
+            },
+            {
+                id: 45,
+                name: "Ultrasarro Galon",
+                price: 12.30,
+                image: "imagenes/ultrasarro-galon.jpg"
+            },
+            {
+                id: 46,
+                name: "Ultrasarro 600ml",
+                price: 3.55,
+                image: "imagenes/ultrasarro-600.png"
+            },
+            {
+                id: 47,
+                name: "Limpiador Desinfectacte de inodoros Brisa Marina Litro",
+                price: 3.85,
+                image: "imagenes/limpiador-inodoro.jpg"
+            },
+            {
+                id: 48,
+                name: "Sanitizantes de Manos 500ml",
+                price: 3.85,
+                image: "imagenes/sanitizante-de-manos.jpg"
+            },
+            {
+                id: 49,
+                name: "Alcohol Gel Manzanilla 500ml",
+                price: 4.20,
+                image: "imagenes/alcohol-gel-manzanilla.jpg"
+            },
+            {
+                id: 50,
+                name: "Jabón Líquido Durazno & Sandia 500ml",
+                price: 4.30,
+                image: "imagenes/JABON-DURAZNO-SANDIA.jpg"
+            },
+            {
+                id: 51,
+                name: "Jabón de Baño para Bebes y Niños Aroma Angel Litro",
+                price: 11.55,
+                image: "imagenes/jabon-de-bano-para-bebes-angel.jpg"
+            },
+            {
+                id: 52,
+                name: "Jabón de Baño para Bebes y Niños Aroma Manzanilla litro",
+                price: 9.20,
+                image: "imagenes/Jabon-de-bano-para-bebes-manzanilla.jpg"
+            },
+            {
+                id: 53,
+                name: "Crema Limpiadora de Manos Naranja 500ml",
+                price: 6.90,
+                image: "imagenes/crema-limpiadora-de-manos.jpg"
+            },
+            {
+                id: 54,
+                name: "Jabón Líquido Coco & Vainilla 500ml",
+                price: 4.40,
+                image: "imagenes/coco-vainilla.jpg"
+            },
+            {
+                id: 55,
+                name: "Jabón Líquido Pera & Manzana 500ml",
+                price: 4.40,
+                image: "imagenes/jabon-pera-manzana.jpg"
+            },
+            {
+                id: 56,
+                name: "Jabón Líquido Chicle 500ml",
+                price: 4.25,
+                image: "imagenes/JABON-CHICLE.jpeg"
+            },
+            {
+                id: 57,
+                name: "Jabón Líquido Floral",
+                price: 4.25,
+                image: "imagenes/jabon-liquido-floral.jpg"
+            },
+            {
+                id: 58,
+                name: "Body Splash Felicidad 250ml",
+                price: 8.70,
+                image: "imagenes/body-felicidad.jpg"
+            },
+            {
+                id: 59,
+                name: "Gel de baño Almendras 385ml",
+                price: 6.90,
+                image: "imagenes/gel-bano-almendra.jpg"
+            },
+            {
+                id: 60,
+                name: "Jabón Espumoso Hierba Luisa y Limón 280ml",
+                price: 9.20,
+                image: "imagenes/JABON-ESPUMOSO.jpg"
+            },
+            {
+                id: 61,
+                name: "Jabón Líquido Brío 500ml",
+                price: 4.85,
+                image: "imagenes/jabon-liquido-brio-500.jpg"
+            },
+            {
+                id: 62,
+                name: "Gel de Baño Brío 385ml",
+                price: 7.15,
+                image: "imagenes/Gel-Bano-Brio.jpg"
+            },
+            {
+                id: 63,
+                name: "Loción Corporal Brío 250ml",
+                price: 11.25,
+                image: "imagenes/locion-brio.jpg"
+            },
+            {
+                id: 64,
+                name: "Suplemento Nutricional de Colágeno Hidrolizado 360GR",
+                price: 39.95,
+                image: "imagenes/COLAGENO.jpg"
+            },
+            {
+                id: 65,
+                name: "Proteína Vegetal Vainilla 450GR",
+                price: 44.95,
+                image: "imagenes/proteina.jpg"
+            },
+            {
+                id: 66,
+                name: "Bebida Multicereal Instantánea 500GR",
+                price: 11.25,
+                image: "imagenes/BEBIDA-MULTICEREAL.jpeg"
+            },
+            {
+                id: 67,
+                name: "Espuma Limpiadora Multiusos Magic Clean 280ml",
+                price: 8.30,
+                image: "imagenes/espuma-magic.jpg"
+            },
+            {
+                id: 68,
+                name: "Shampoo de Autos con Cera, Fresa Litro",
+                price: 5.35,
+                image: "imagenes/shampoo-de-autos.jpg"
+            },
+            {
+                id: 69,
+                name: "Silicona Abrillantadora de superficies, Vainilla 500ml",
+                price: 6.65,
+                image: "imagenes/silicona-abrillantadora.jpg"
+            },
+            {
+                id: 70,
+                name: "Ambiental Aroma Auto Nuevo 120ml",
+                price: 4.40,
+                image: "imagenes/ambiental-autoNuevo.jpg"
+            },
+            {
+                id: 71,
+                name: "Ambiental Aroma Vainilla Oriental 250ml",
+                price: 8.10,
+                image: "imagenes/ambiental-vainilla-oriental.jpg"
+            },
+            {
+                id: 72,
+                name: "Esponja Microfibra para Auto",
+                price: 4.35,
+                image: "imagenes/esponja-microfibra.jpg"
+            },
+            {
+                id: 73,
+                name: "Mejorador de Combustible Fuel Power 6onz",
+                price: 7.95,
+                image: "imagenes/fuel-power.jpg"
+            }            
+        ];
+        
+        // Carrito de compras
+        let cart = [];
+        
+        // Elementos del DOM
+        const productsGrid = document.getElementById('productsGrid');
+        const cartButton = document.getElementById('cartButton');
+        const cartModal = document.getElementById('cartModal');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartCount = document.getElementById('cartCount');
+        const sendOrder = document.getElementById('sendOrder');
+        const whatsappButton = document.getElementById('whatsappButton');
+        
+        // Función para cargar los productos en la página
+        function loadProducts() {
+            productsGrid.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" data-id="${product.id}">Agregar al Carrito</button>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+            
+            // Agregar event listeners a los botones "Agregar al Carrito"
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+        }
+        
+        // Función para agregar un producto al carrito
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                const existingItem = cart.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+            }
+        }
+        
+        // Función para actualizar la visualización del carrito
+        function updateCart() {
+            // Actualizar contador del carrito
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Actualizar contenido del modal del carrito
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Tu carrito está vacío</p>';
+            } else {
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    
+                    cartItem.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">$${item.price.toFixed(2)} c/u</div>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                        </div>
+                        <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                    `;
+                    
+                    cartItems.appendChild(cartItem);
+                });
+                
+                // Agregar event listeners a los botones de cantidad
+                const decreaseButtons = document.querySelectorAll('.decrease');
+                const increaseButtons = document.querySelectorAll('.increase');
+                
+                decreaseButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        decreaseQuantity(productId);
+                    });
+                });
+                
+                increaseButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        increaseQuantity(productId);
+                    });
+                });
+            }
+            
+            // Actualizar total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = total.toFixed(2);
+        }
+        
+        // Función para disminuir la cantidad de un producto en el carrito
+        function decreaseQuantity(productId) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                if (item.quantity > 1) {
+                    item.quantity -= 1;
+                } else {
+                    // Eliminar el producto del carrito si la cantidad es 1
+                    cart = cart.filter(item => item.id !== productId);
+                }
+                
+                updateCart();
+            }
+        }
+        
+        // Función para aumentar la cantidad de un producto en el carrito
+        function increaseQuantity(productId) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += 1;
+                updateCart();
+            }
+        }
+        
+        // Función para enviar el pedido por WhatsApp
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío. Agrega productos antes de enviar el pedido.');
+                return;
+            }
+            
+            let message = "¡Hola! Me gustaría hacer el siguiente pedido:%0A%0A";
+            
+            cart.forEach(item => {
+                message += `- ${item.name} x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
+            
+            message += `%0ATotal: $${cartTotal.textContent}%0A%0A¡Gracias!`;
+            
+            // Crear el enlace de WhatsApp
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+            
+            // Abrir WhatsApp en una nueva pestaña
+            window.open(whatsappURL, '_blank');
+        }
+        
+        // Event Listeners
+        cartButton.addEventListener('click', function() {
+            cartModal.style.display = 'flex';
+        });
+        
+        closeCart.addEventListener('click', function() {
+            cartModal.style.display = 'none';
+        });
+        
+        // Cerrar el modal al hacer clic fuera de él
+        window.addEventListener('click', function(event) {
+            if (event.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+        });
+        
+        sendOrder.addEventListener('click', sendWhatsAppOrder);
+        
+        // Botón de WhatsApp para consultas generales
+        whatsappButton.addEventListener('click', function() {
+            const message = "¡Hola! Me gustaría obtener más información sobre sus productos de limpieza.";
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        });
+        
+        // Cargar los productos cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>
