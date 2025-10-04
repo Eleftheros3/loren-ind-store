@@ -38,8 +38,16 @@
         }
         
         .logo {
-            font-size: 25px;
+             display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
             font-weight: bold;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
         }
         
         /* Estilos del botón del carrito */
@@ -307,7 +315,10 @@
     <!-- Encabezado con logo y botón del carrito -->
     <header>
         <div class="header-container">
-            <div class="logo">Loren_Ind</div>
+            <div class="logo">
+                <img src="imagenes/logo_lor_II.png" alt="Loren_Ind" class="logo-image">
+                <span>Lore_Ind</span>
+            </div>
             <button class="cart-button" id="cartButton">
                 🛒
                 <span class="cart-count" id="cartCount">0</span>
@@ -1001,4 +1012,5 @@
         document.addEventListener('DOMContentLoaded', loadProducts);
     </script>
 </body>
+
 </html>
